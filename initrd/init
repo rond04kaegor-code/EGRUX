@@ -1,0 +1,13 @@
+#!/bin/sh
+echo "EGRUX initrd boot"
+mount -t proc none /proc 2>/dev/null
+mount -t sysfs none /sys 2>/dev/null
+for dev in /dev/sda1 /dev/sdb1; do
+    if mount -t fat32 "$dev" /mnt/newroot 2>/dev/null; then
+        for d in bin sbin etc lib; do cp -r "/$d"/* "/mnt/newroot/$d/" 2>/dev/null; done
+        mount --move /proc /mnt/newroot/proc 2>/dev/null
+        mount --move /sys /mnt/newroot/sys 2>/dev/null
+        exec switch_root /mnt/newroot /sbin/init
+    fi
+done
+exec /bin/sh

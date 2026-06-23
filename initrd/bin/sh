@@ -1,0 +1,4 @@
+#!/bin/sh
+while true; do printf "egrux> "; read cmd || break
+case "$cmd" in help) echo "help exit ls";; exit) exit 0;; ls) ls /;; esac
+done
